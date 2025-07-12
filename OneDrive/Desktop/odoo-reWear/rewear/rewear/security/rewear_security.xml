@@ -1,0 +1,33 @@
+<odoo>
+  <data>
+    <!-- Admin/Manager Group -->
+    <record id="group_rewear_admin" model="res.groups">
+      <field name="name">ReWear Admin/Manager</field>
+      <field name="category_id" ref="base.module_category_tools"/>
+    </record>
+
+    <!-- Record Rule: Users see only their own items -->
+    <record id="rewear_item_own_rule" model="ir.rule">
+      <field name="name">See Own Items</field>
+      <field name="model_id" ref="model_rewear_item"/>
+      <field name="domain_force">['|',('owner_id','=',user.id),('owner_id','=',False)]</field>
+      <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+      <field name="perm_read" eval="1"/>
+      <field name="perm_write" eval="1"/>
+      <field name="perm_create" eval="1"/>
+      <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <!-- Record Rule: Admins see all items -->
+    <record id="rewear_item_admin_rule" model="ir.rule">
+      <field name="name">Admin See All Items</field>
+      <field name="model_id" ref="model_rewear_item"/>
+      <field name="domain_force">[(1,'=',1)]</field>
+      <field name="groups" eval="[(4, ref('rewear.group_rewear_admin'))]"/>
+      <field name="perm_read" eval="1"/>
+      <field name="perm_write" eval="1"/>
+      <field name="perm_create" eval="1"/>
+      <field name="perm_unlink" eval="1"/>
+    </record>
+  </data>
+</odoo> 
