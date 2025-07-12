@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="rewear.list">
+      <field name="name">rewear list</field>
+      <field name="model">rewear.rewear</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="rewear.action_window">
+      <field name="name">rewear window</field>
+      <field name="res_model">rewear.rewear</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="rewear.action_server">
+      <field name="name">rewear server</field>
+      <field name="model_id" ref="model_rewear_rewear"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="rewear" id="rewear.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="rewear.menu_1" parent="rewear.menu_root"/>
+    <menuitem name="Menu 2" id="rewear.menu_2" parent="rewear.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="rewear.menu_1_list" parent="rewear.menu_1"
+              action="rewear.action_window"/>
+    <menuitem name="Server to list" id="rewear" parent="rewear.menu_2"
+              action="rewear.action_server"/>
+-->
+  </data>
+</odoo>
