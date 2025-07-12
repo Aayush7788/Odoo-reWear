@@ -1,60 +1,119 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
-<!--
-    <record model="ir.ui.view" id="rewear.list">
-      <field name="name">rewear list</field>
-      <field name="model">rewear.rewear</field>
+    <!-- Item Tree View -->
+    <record id="view_rewear_item_tree" model="ir.ui.view">
+      <field name="name">rewear.item.tree</field>
+      <field name="model">rewear.item</field>
       <field name="arch" type="xml">
-        <list>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </list>
+        <tree>
+          <field name="title"/>
+          <field name="category"/>
+          <field name="type"/>
+          <field name="size"/>
+          <field name="condition"/>
+          <field name="points_cost"/>
+          <field name="availability"/>
+          <field name="owner_id"/>
+        </tree>
       </field>
     </record>
--->
 
-    <!-- actions opening views on models -->
-<!--
-    <record model="ir.actions.act_window" id="rewear.action_window">
-      <field name="name">rewear window</field>
-      <field name="res_model">rewear.rewear</field>
-      <field name="view_mode">list,form</field>
-    </record>
--->
-
-    <!-- server action to the one above -->
-<!--
-    <record model="ir.actions.server" id="rewear.action_server">
-      <field name="name">rewear server</field>
-      <field name="model_id" ref="model_rewear_rewear"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "list,form",
-          "res_model": model._name,
-        }
+    <!-- Item Form View -->
+    <record id="view_rewear_item_form" model="ir.ui.view">
+      <field name="name">rewear.item.form</field>
+      <field name="model">rewear.item</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="title"/>
+              <field name="description"/>
+              <field name="category"/>
+              <field name="type"/>
+              <field name="size"/>
+              <field name="condition"/>
+              <field name="tags"/>
+              <field name="image" widget="image"/>
+              <field name="points_cost"/>
+              <field name="availability"/>
+              <field name="owner_id"/>
+            </group>
+          </sheet>
+        </form>
       </field>
     </record>
--->
 
-    <!-- Top menu item -->
-<!--
-    <menuitem name="rewear" id="rewear.menu_root"/>
--->
-    <!-- menu categories -->
-<!--
-    <menuitem name="Menu 1" id="rewear.menu_1" parent="rewear.menu_root"/>
-    <menuitem name="Menu 2" id="rewear.menu_2" parent="rewear.menu_root"/>
--->
-    <!-- actions -->
-<!--
-    <menuitem name="List" id="rewear.menu_1_list" parent="rewear.menu_1"
-              action="rewear.action_window"/>
-    <menuitem name="Server to list" id="rewear" parent="rewear.menu_2"
-              action="rewear.action_server"/>
--->
+    <!-- Item Kanban View -->
+    <record id="view_rewear_item_kanban" model="ir.ui.view">
+      <field name="name">rewear.item.kanban</field>
+      <field name="model">rewear.item</field>
+      <field name="arch" type="xml">
+        <kanban>
+          <field name="title"/>
+          <field name="image"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div class="oe_kanban_global_click">
+                <img t-if="record.image.raw_value" t-att-src="kanban_image('rewear.item', 'image', record.id.raw_value)" class="oe_kanban_image"/>
+                <div><strong><field name="title"/></strong></div>
+                <div><field name="category"/> | <field name="size"/></div>
+                <div><field name="condition"/></div>
+                <div>Points: <field name="points_cost"/></div>
+                <div>Status: <field name="availability"/></div>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <!-- Swap Tree View -->
+    <record id="view_rewear_swap_tree" model="ir.ui.view">
+      <field name="name">rewear.swap.tree</field>
+      <field name="model">rewear.swap</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="item_id"/>
+          <field name="requester_id"/>
+          <field name="owner_id"/>
+          <field name="status"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Swap Form View -->
+    <record id="view_rewear_swap_form" model="ir.ui.view">
+      <field name="name">rewear.swap.form</field>
+      <field name="model">rewear.swap</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="item_id"/>
+              <field name="requester_id"/>
+              <field name="owner_id"/>
+              <field name="status"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Admin Menu -->
+    <menuitem id="menu_rewear_root" name="ReWear" sequence="10"/>
+    <menuitem id="menu_rewear_items" name="Items" parent="menu_rewear_root" action="action_rewear_item"/>
+    <menuitem id="menu_rewear_swaps" name="Swaps" parent="menu_rewear_root" action="action_rewear_swap"/>
+
+    <!-- Actions -->
+    <record id="action_rewear_item" model="ir.actions.act_window">
+      <field name="name">Items</field>
+      <field name="res_model">rewear.item</field>
+      <field name="view_mode">tree,form,kanban</field>
+    </record>
+    <record id="action_rewear_swap" model="ir.actions.act_window">
+      <field name="name">Swaps</field>
+      <field name="res_model">rewear.swap</field>
+      <field name="view_mode">tree,form</field>
+    </record>
   </data>
 </odoo>
