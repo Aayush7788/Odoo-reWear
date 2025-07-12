@@ -1,24 +1,123 @@
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
+        <!-- Landing Page Template -->
+        <template id="landing" name="ReWear Landing Page">
+            <section class="rewear-landing">
+                <h1>Welcome to ReWear</h1>
+                <div class="cta-buttons">
+                    <a href="/rewear/browse" class="btn btn-primary">Browse Items</a>
+                    <a href="/rewear/add" class="btn btn-success">List an Item</a>
+                    <a href="/web/login" class="btn btn-secondary">Start Swapping</a>
+                </div>
+                <div class="carousel">
+                    <h2>Featured Items</h2>
+                    <div class="carousel-items">
+                        <t t-foreach="featured_items" t-as="item">
+                            <div class="carousel-item">
+                                <img t-if="item.image" t-att-src="'/web/image/rewear.item/' + str(item.id) + '/image'" style="max-width:120px;max-height:120px;"/>
+                                <div><strong><t t-esc="item.title"/></strong></div>
+                                <div><t t-esc="item.category"/> | <t t-esc="item.size"/></div>
+                                <a t-att-href="'/rewear/item/' + str(item.id)">View</a>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
         </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
-            </t>
-          </dl>
+
+        <!-- Browse Page Template -->
+        <template id="browse" name="Browse Items">
+            <section class="rewear-browse">
+                <h1>Browse All Items</h1>
+                <div class="item-list">
+                    <t t-foreach="items" t-as="item">
+                        <div class="item-card">
+                            <img t-if="item.image" t-att-src="'/web/image/rewear.item/' + str(item.id) + '/image'" style="max-width:100px;max-height:100px;"/>
+                            <div><strong><t t-esc="item.title"/></strong></div>
+                            <div><t t-esc="item.category"/> | <t t-esc="item.size"/></div>
+                            <div>Points: <t t-esc="item.points_cost"/></div>
+                            <a t-att-href="'/rewear/item/' + str(item.id)">View Details</a>
+                        </div>
+                    </t>
+                </div>
+            </section>
         </template>
--->
+
+        <!-- Item Detail Page Template -->
+        <template id="item_detail" name="Item Detail">
+            <section class="rewear-item-detail">
+                <h1><t t-esc="item.title"/></h1>
+                <div class="item-gallery">
+                    <img t-if="item.image" t-att-src="'/web/image/rewear.item/' + str(item.id) + '/image'" style="max-width:200px;max-height:200px;"/>
+                </div>
+                <div class="item-info">
+                    <p><strong>Category:</strong> <t t-esc="item.category"/></p>
+                    <p><strong>Type:</strong> <t t-esc="item.type"/></p>
+                    <p><strong>Size:</strong> <t t-esc="item.size"/></p>
+                    <p><strong>Condition:</strong> <t t-esc="item.condition"/></p>
+                    <p><strong>Description:</strong> <t t-esc="item.description"/></p>
+                    <p><strong>Tags:</strong> <t t-esc="item.tags"/></p>
+                    <p><strong>Points Cost:</strong> <t t-esc="item.points_cost"/></p>
+                    <p><strong>Status:</strong> <t t-esc="item.availability"/></p>
+                </div>
+                <div class="item-actions">
+                    <t t-if="item.availability == 'available'">
+                        <a href="#" class="btn btn-primary">Request Swap</a>
+                        <a href="#" class="btn btn-success">Redeem with Points</a>
+                    </t>
+                    <t t-if="item.availability != 'available'">
+                        <span class="badge badge-secondary">Not Available</span>
+                    </t>
+                </div>
+            </section>
+        </template>
+
+        <!-- Add Item Page Template -->
+        <template id="add_item" name="Add Item">
+            <section class="rewear-add-item">
+                <h1>List a New Item</h1>
+                <form method="post" enctype="multipart/form-data">
+                    <input type="text" name="title" placeholder="Title" required="required"/><br/>
+                    <textarea name="description" placeholder="Description"></textarea><br/>
+                    <input type="text" name="category" placeholder="Category" required="required"/><br/>
+                    <input type="text" name="type" placeholder="Type"/><br/>
+                    <input type="text" name="size" placeholder="Size" required="required"/><br/>
+                    <input type="text" name="condition" placeholder="Condition" required="required"/><br/>
+                    <input type="text" name="tags" placeholder="Tags"/><br/>
+                    <input type="file" name="image"/><br/>
+                    <input type="number" name="points_cost" placeholder="Points Cost" value="10" required="required"/><br/>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </form>
+            </section>
+        </template>
+
+        <!-- User Dashboard Template -->
+        <template id="user_dashboard" name="User Dashboard">
+            <section class="rewear-dashboard">
+                <h1>My Dashboard</h1>
+                <div><strong>User:</strong> <t t-esc="user.name"/></div>
+                <div><strong>Points Balance:</strong> <t t-esc="user.points_balance"/></div>
+                <h2>My Listings</h2>
+                <div class="item-list">
+                    <t t-foreach="my_items" t-as="item">
+                        <div class="item-card">
+                            <img t-if="item.image" t-att-src="'/web/image/rewear.item/' + str(item.id) + '/image'" style="max-width:100px;max-height:100px;"/>
+                            <div><strong><t t-esc="item.title"/></strong></div>
+                            <div><t t-esc="item.category"/> | <t t-esc="item.size"/></div>
+                            <div>Status: <t t-esc="item.availability"/></div>
+                        </div>
+                    </t>
+                </div>
+                <h2>My Swap Requests</h2>
+                <div class="swap-list">
+                    <t t-foreach="my_swaps" t-as="swap">
+                        <div class="swap-card">
+                            <div>Item: <t t-esc="swap.item_id.title"/></div>
+                            <div>Status: <t t-esc="swap.status"/></div>
+                        </div>
+                    </t>
+                </div>
+            </section>
+        </template>
     </data>
 </odoo>
