@@ -1,2 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_rewear_rewear,rewear.rewear,model_rewear_rewear,base.group_user,1,1,1,1
+access_rewear_item_user,rewear.item.user,model_rewear_item,base.group_user,1,1,1,0
+access_rewear_swap_user,rewear.swap.user,model_rewear_swap,base.group_user,1,1,1,0
+access_res_users_points,rewear.res.users.points,model_res_users,base.group_user,1,0,0,0
+# Admin/manager group rules will be added after group creation
